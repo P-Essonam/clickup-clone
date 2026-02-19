@@ -7,7 +7,6 @@ export default function Home() {
     <div>
       <Button variant="destructive">Click me</Button>
       <ModeToggle />
-      {env.NEXT_PUBLIC_APP_URL}
     </div>
   )
 }
