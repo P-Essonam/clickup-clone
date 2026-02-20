@@ -1,16 +1,17 @@
-import React from 'react'
+import AuthGuard from "@/features/auth/components/auth-guard";
+import WorkspaceGuard from "@/features/auth/components/workspace-guard";
+import React from "react";
 
 interface Props {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
-
-const Layout = ({ children } : Props) => {
+const Layout = ({ children }: Props) => {
   return (
-    <>
-        {children}
-    </>
-  )
-}
+    <AuthGuard>
+      <WorkspaceGuard>{children}</WorkspaceGuard>
+    </AuthGuard>
+  );
+};
 
-export default Layout
+export default Layout;
