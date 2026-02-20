@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { TRPCReactProvider } from "@/trpc/client";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <TooltipProvider>{children}</TooltipProvider>
+              <Toaster />
             </ThemeProvider>
           </TRPCReactProvider>
         </ConvexClientProvider>
