@@ -1,3 +1,4 @@
+import DashboardSidebar from "@/components/dashboard-sidebar";
 import AuthGuard from "@/features/auth/components/auth-guard";
 import WorkspaceGuard from "@/features/auth/components/workspace-guard";
 import React from "react";
@@ -9,7 +10,11 @@ interface Props {
 const Layout = ({ children }: Props) => {
   return (
     <AuthGuard>
-      <WorkspaceGuard>{children}</WorkspaceGuard>
+      <WorkspaceGuard>
+        <DashboardSidebar>
+          {children}
+        </DashboardSidebar>
+      </WorkspaceGuard>
     </AuthGuard>
   );
 };

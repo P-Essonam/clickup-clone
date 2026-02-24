@@ -43,7 +43,7 @@ const OnboardingWizard = () => {
         })
 
 
-        window.location.reload()
+        window.location.replace("/dashboard")
       },
 
       onError: async (error) => {
