@@ -7,6 +7,29 @@ import {
 import { getWorkOS } from "@workos-inc/authkit-nextjs";
 
 export const organizationRouter = createTRPCRouter({
+
+  getOrganization: protectedProcedure.query(async ({ ctx }) => {
+    const workos = getWorkOS();
+    const organization = await workos.organizations.getOrganization(
+      ctx.organizationId
+    )
+
+    return organization;
+  }),
+  
+  updateOrganizationName: protectedProcedure
+    .input(
+      z.object({
+        name: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+        const workos = getWorkOS();
+        await workos.organizations.updateOrganization({
+          organization: ctx.organizationId,
+          name: input.name
+        })
+    }),
     
   countMembers: protectedProcedure.query(async ({ ctx }) => {
     const workos = getWorkOS();
