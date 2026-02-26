@@ -1,7 +1,7 @@
 import { MemberRole } from "./types";
 
 export const normalizeAdminMemberRole = (role?: string | null): MemberRole => {
-  if (role === "admin") return "amdin";
+  if (role === "admin") return "admin";
 
   return "member";
 };
