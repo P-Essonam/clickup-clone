@@ -7,30 +7,125 @@ import {
 import { getWorkOS } from "@workos-inc/authkit-nextjs";
 
 export const organizationRouter = createTRPCRouter({
+  listMembers: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100),
+        cursor: z.string().nullish(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      const memberShips =
+        await workos.userManagement.listOrganizationMemberships({
+          organizationId: ctx.organizationId,
+          limit: input.limit,
+          after: input.cursor ?? undefined,
+          order: "desc",
+          statuses: ["active", "inactive", "pending"],
+        });
+
+      const membersWithUsers = await Promise.all(
+        memberShips.data.map(async (memberShip) => {
+          const user = await workos.userManagement.getUser(memberShip.userId);
+          return {
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            profilePictureUrl: user.profilePictureUrl,
+            lastSignInAt: user.lastSignInAt,
+            createdAt: user.createdAt,
+            membershipId: memberShip.id,
+            role: memberShip.role?.slug ?? "member",
+            membershipStatus: memberShip.status,
+          };
+        }),
+      );
+
+      return {
+        items: membersWithUsers,
+        nextCursor: memberShips.listMetadata.after ?? null,
+      };
+    }),
+
+  updateOrganizationMembershipRole: protectedProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+        role: z.enum(["owner", "admin", "member"]),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      return await workos.userManagement.updateOrganizationMembership(
+        input.memberId,
+        { roleSlug: input.role },
+      );
+    }),
+
+  desactivateOrganizationMembership: protectedProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      return await workos.userManagement.deactivateOrganizationMembership(
+        input.memberId,
+      );
+    }),
+
+  reactivateOrganizationMembership: protectedProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      return await workos.userManagement.reactivateOrganizationMembership(
+        input.memberId,
+      );
+    }),
+
+  deleteOrganizationMembership: protectedProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      return await workos.userManagement.deleteOrganizationMembership(
+        input.memberId,
+      );
+    }),
 
   getOrganization: protectedProcedure.query(async ({ ctx }) => {
     const workos = getWorkOS();
     const organization = await workos.organizations.getOrganization(
-      ctx.organizationId
-    )
+      ctx.organizationId,
+    );
 
     return organization;
   }),
-  
+
   updateOrganizationName: protectedProcedure
     .input(
       z.object({
-        name: z.string()
-      })
+        name: z.string(),
+      }),
     )
     .mutation(async ({ ctx, input }) => {
-        const workos = getWorkOS();
-        await workos.organizations.updateOrganization({
-          organization: ctx.organizationId,
-          name: input.name
-        })
+      const workos = getWorkOS();
+      await workos.organizations.updateOrganization({
+        organization: ctx.organizationId,
+        name: input.name,
+      });
     }),
-    
+
   countMembers: protectedProcedure.query(async ({ ctx }) => {
     const workos = getWorkOS();
 
