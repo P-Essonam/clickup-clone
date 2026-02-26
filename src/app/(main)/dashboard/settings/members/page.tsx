@@ -1,8 +1,9 @@
-import React from 'react'
+import MembersTable from '@/features/members/components/members-table'
+
 
 const page = () => {
   return (
-    <div>page</div>
+    <MembersTable />
   )
 }
 
