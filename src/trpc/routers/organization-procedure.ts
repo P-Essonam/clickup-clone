@@ -7,6 +7,67 @@ import {
 import { getWorkOS } from "@workos-inc/authkit-nextjs";
 
 export const organizationRouter = createTRPCRouter({
+  inviteUser: protectedProcedure
+    .input(
+      z.object({
+        email: z.string(),
+        role: z.enum(["owner", "admin", "member"]),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      return await workos.userManagement.sendInvitation({
+        email: input.email,
+        roleSlug: input.role,
+        organizationId: ctx.organizationId,
+        inviterUserId: ctx.userId,
+      });
+    }),
+
+  resendInvitation: protectedProcedure
+    .input(
+      z.object({
+        invitationId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      return await workos.userManagement.resendInvitation(input.invitationId);
+    }),
+
+  revokeInvitation: protectedProcedure
+    .input(
+      z.object({
+        invitationId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      return await workos.userManagement.revokeInvitation(input.invitationId);
+    }),
+
+  listInvitations: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100),
+        cursor: z.string().nullish(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      const list = await workos.userManagement.listInvitations({
+        organizationId: ctx.organizationId,
+        limit: input.limit,
+        after: input.cursor ?? undefined,
+        order: "desc",
+      });
+
+      return {
+        items: list.data,
+        nextCursor: list.listMetadata.after ?? null,
+      };
+    }),
+
   listMembers: protectedProcedure
     .input(
       z.object({

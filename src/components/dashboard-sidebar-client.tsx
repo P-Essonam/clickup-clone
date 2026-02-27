@@ -9,12 +9,15 @@ import {
   Layers,
   Settings,
   Sparkles,
+  UserPlus,
 } from "lucide-react";
 import { useSidebar } from "@/hooks/use-sidebar-store";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import WorkspaceHeader from "./workspace-header";
+import InviteMemberDialog from "@/features/invitations/components/invite-member-dialog";
+import { useAuth } from "@workos-inc/authkit-nextjs/components";
 
 const navItems = [
   { title: "Spaces", url: "/dashboard", icon: Layers },
@@ -29,6 +32,7 @@ interface Props {
 
 const DashboardSidebarClient = ({ children }: Props) => {
   const { sidebarOpen, openSidebar } = useSidebar();
+  const { role } = useAuth()
 
   const pathname = usePathname();
 
@@ -93,6 +97,26 @@ const DashboardSidebarClient = ({ children }: Props) => {
               );
             })}
           </nav>
+
+          <div className="flex flex-col items-center gap-2 border-t border-primary-foreground/20 pb-2">
+            <InviteMemberDialog 
+              canInvite={role === "admin"}
+              trigger={
+                <button
+                  type="button"
+                  className="group flex flex-col items-center gap-1 text-xs font-medium text-primary-foreground/70 transition-colors hover:text-primary-foreground"
+                >
+                  <span className="flex size-9 items-center justify-center rounded-lg transition-colors group-hover:bg-primary-foreground/10">
+                    <UserPlus className="size-4"/>
+                  </span>
+                  <span className="font-medium text-xs">
+                    Invite
+                  </span>
+                </button>
+              }
+            />
+          </div>
+
         </aside>
 
         

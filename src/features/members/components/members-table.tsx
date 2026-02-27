@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import MemberStatusBadge from "./member-status-badge";
 import MemberActions from "./member-actions";
 import InfiniteScroll from "@/components/infinite-scroll";
+import InviteMemberDialog from "@/features/invitations/components/invite-member-dialog";
 
 const MembersTable = () => {
   const trpc = useTRPC();
@@ -72,7 +73,7 @@ const MembersTable = () => {
           </p>
         </div>
 
-        {/* TODO: Add invite */}
+        <InviteMemberDialog canInvite={canInvite} />
       </div>
       <Table>
         <TableHeader>
@@ -189,7 +190,7 @@ const MembersTable = () => {
 
           <TableRow>
             <TableCell colSpan={6} className="p-0">
-              <InfiniteScroll 
+              <InfiniteScroll
                 status={membersStatus}
                 isLoading={isLoadingMembers}
                 loadMore={() => fetchNextPage()}
