@@ -8,7 +8,12 @@
  * @module
  */
 
+import type * as auth from "../auth.js";
+import type * as lib_constants from "../lib/constants.js";
+import type * as lists from "../lists.js";
 import type * as onboarding from "../onboarding.js";
+import type * as spaces from "../spaces.js";
+import type * as tasks from "../tasks.js";
 
 import type {
   ApiFromModules,
@@ -17,7 +22,12 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
+  "lib/constants": typeof lib_constants;
+  lists: typeof lists;
   onboarding: typeof onboarding;
+  spaces: typeof spaces;
+  tasks: typeof tasks;
 }>;
 
 /**
