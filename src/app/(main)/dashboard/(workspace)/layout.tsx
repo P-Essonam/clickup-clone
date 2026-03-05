@@ -3,7 +3,7 @@
 import SecondarySidebar from "@/components/secondary-sidebar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import CreateSpaceDialog from "@/features/spaces/components/create-space-dialog";
+import CreateSpaceDialog from "@/features/spaces/components/space-dialog";
 import SpacesSidebar from "@/features/spaces/components/spaces-sidebar";
 import { useSpaces } from "@/features/spaces/hooks/use-spaces";
 import { Plus } from "lucide-react";

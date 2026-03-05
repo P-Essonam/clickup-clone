@@ -35,7 +35,7 @@ interface Props {
   listId?: Id<"lists">;
 }
 
-const CreateListDialog = ({
+const ListDialog = ({
   open,
   onOpenChange,
   spaces,
@@ -155,4 +155,4 @@ const CreateListDialog = ({
   );
 };
 
-export default CreateListDialog;
+export default ListDialog;

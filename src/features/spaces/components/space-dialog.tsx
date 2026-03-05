@@ -36,7 +36,7 @@ interface Props {
 const DEFAULT_ICON = "Layers";
 const DEFAULT_COLOR = "bg-indigo-500";
 
-const CreateSpaceDialog = ({
+const SpaceDialog = ({
   open,
   onOpenChange,
   initialValues,
@@ -195,4 +195,4 @@ const CreateSpaceDialog = ({
   );
 };
 
-export default CreateSpaceDialog;
+export default SpaceDialog;
