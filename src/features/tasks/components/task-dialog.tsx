@@ -177,7 +177,7 @@ const TaskDialog = ({
         ),
       );
     }
-  }, []);
+  }, [open, isEdit, task, form, defaultStatus]);
 
   const assigneeIds = form.watch("assigneeIds") ?? [];
   const assignedMembers = members.filter((m) => assigneeIds.includes(m.id));
