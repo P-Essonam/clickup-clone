@@ -3,7 +3,7 @@ import { Doc } from "../../../../convex/_generated/dataModel";
 
 
 export type Task = Doc<"tasks">;
-
+export type StatusKey = Doc<"tasks">["status"];
 
 export type TaskPriority = Exclude<Doc<"tasks">["priority"], undefined>;
 
