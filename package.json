@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
+    "@convex-dev/agent": "^0.3.2",
     "@convex-dev/workos": "^0.0.1",
     "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^5.2.2",
@@ -20,7 +21,9 @@
     "@trpc/server": "^11.10.0",
     "@trpc/tanstack-react-query": "^11.10.0",
     "@workos-inc/authkit-nextjs": "^2.14.0",
+    "@workos-inc/node": "^8.9.0",
     "@workos-inc/widgets": "^1.7.2",
+    "ai": "^5.0.123",
     "class-variance-authority": "^0.7.1",
     "client-only": "^0.0.1",
     "clsx": "^2.1.1",

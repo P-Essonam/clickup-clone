@@ -73,7 +73,11 @@ export default defineSchema({
         .searchIndex("search_by_title", {
             searchField: "title",
             filterFields: ["organizationId", "listId"]
-        })
+        }),
+    currentThreads: defineTable({
+        threadId: v.string(),
+        userId: v.string(),
+    }).index("by_userId", ["userId"]),
         
     
 })
