@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { idsMatch, reorderById } from "../lib/utils";
-import { Space } from "../lib/types";
+import { Id } from "../../convex/_generated/dataModel";
+import { idsMatch, reorderById } from "../features/spaces/lib/utils";
+import { Space } from "../features/spaces/lib/types";
 
 export function useSpaces() {
   const router = useRouter();
@@ -180,24 +180,21 @@ export function useSpaces() {
     await removeListMutation({ id });
   };
 
-
   const reorderSpaces = useCallback(
     (orderedIds: Id<"spaces">[]) => {
-      setOptimisticSpaceOrder(orderedIds)
-      reorderSpacesMutation({ orderedIds })
+      setOptimisticSpaceOrder(orderedIds);
+      reorderSpacesMutation({ orderedIds });
     },
-    [reorderSpacesMutation]
-  )
+    [reorderSpacesMutation],
+  );
 
   const reorderLists = useCallback(
-    ( orderedIds: Id<"lists">[], spaceId: Id<"spaces"> ) => {
-      setOptimisticListOrders(
-        (prev) => ({ ...prev, [spaceId]: orderedIds })
-      )
-      reorderListsMutation({ spaceId, orderedIds })
+    (orderedIds: Id<"lists">[], spaceId: Id<"spaces">) => {
+      setOptimisticListOrders((prev) => ({ ...prev, [spaceId]: orderedIds }));
+      reorderListsMutation({ spaceId, orderedIds });
     },
-    [reorderSpacesMutation]
-  )
+    [reorderSpacesMutation],
+  );
 
   return {
     spaces,
@@ -210,6 +207,6 @@ export function useSpaces() {
     updateList,
     deleteList,
     reorderSpaces,
-    reorderLists
+    reorderLists,
   };
 }

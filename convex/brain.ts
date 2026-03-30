@@ -21,6 +21,8 @@ import { getOrganizationId, getUserId } from "./auth";
 import z from "zod/v3";
 import { tools } from "./tools";
 
+import { groq } from "@ai-sdk/groq"
+
 const brain = `You are Brain, an AI assistant for this project management workspace.
 
 ## Data Model
@@ -131,7 +133,7 @@ const brainAgent = new Agent<BrainCtx>(components.agent, {
   name: "Brain",
   instructions: brain,
   tools: tools,
-  languageModel: "moonshotai/kimi-k2.5",
+  languageModel: groq("openai/gpt-oss-120b"),
   stopWhen: stepCountIs(10),
   callSettings: {
     maxRetries: 10,

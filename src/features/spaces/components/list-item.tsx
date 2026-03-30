@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Doc } from "../../../../convex/_generated/dataModel";
 import { useRouter } from "next/navigation";
-import { useSpaces } from "../hooks/use-spaces";
+import { useSpaces } from "../../../hooks/use-spaces";
 import { Draggable } from "@hello-pangea/dnd";
 import SecondarySidebarItem from "./secondary-sidebar-item";
 import { cn } from "@/lib/utils";

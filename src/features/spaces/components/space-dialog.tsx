@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/popover";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { SpaceFormValues } from "../lib/types";
-import { useSpaces } from "../hooks/use-spaces";
+import { useSpaces } from "../../../hooks/use-spaces";
 import { toast } from "sonner";
 import IconPicker, { getIcon } from "@/components/icon-picker";
 import { cn } from "@/lib/utils";
@@ -69,7 +69,6 @@ const SpaceDialog = ({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    
     if (!canSubmit || (isEdit && !spaceId)) return;
 
     setIsSubmitting(true);
