@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { ListFormValues } from "../lib/types";
-import { useSpaces } from "../hooks/use-spaces";
+import { useSpaces } from "../../../hooks/use-spaces";
 import { cn } from "@/lib/utils";
 import { getIcon } from "@/components/icon-picker";
 
@@ -63,8 +63,8 @@ const ListDialog = ({
   const canSubmit = !!name.trim() && !!spaceId && !isSubmitting;
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     if (!canSubmit || (isEdit && !listId)) return;
 
     setIsSubmitting(true);

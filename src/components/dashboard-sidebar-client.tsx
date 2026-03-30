@@ -18,6 +18,10 @@ import { usePathname } from "next/navigation";
 import WorkspaceHeader from "./workspace-header";
 import InviteMemberDialog from "@/features/invitations/components/invite-member-dialog";
 import { useAuth } from "@workos-inc/authkit-nextjs/components";
+import { Preloaded } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import AskAiSidebar from "@/features/brain/components/ask-ai-sidebar";
+import { useAskAIStore } from "@/features/brain/hooks/use-ask-ai-store";
 
 const navItems = [
   { title: "Spaces", url: "/dashboard", icon: Layers },
@@ -28,11 +32,17 @@ const navItems = [
 
 interface Props {
   children: React.ReactNode;
+  preloadedCurrentThread: Preloaded<typeof api.brain.getCurrentThread>;
 }
 
-const DashboardSidebarClient = ({ children }: Props) => {
+const DashboardSidebarClient = ({
+  children,
+  preloadedCurrentThread,
+}: Props) => {
   const { sidebarOpen, openSidebar } = useSidebar();
-  const { role } = useAuth()
+  const { role } = useAuth();
+
+  const { open } = useAskAIStore()
 
   const pathname = usePathname();
 
@@ -51,7 +61,7 @@ const DashboardSidebarClient = ({ children }: Props) => {
         <WorkspaceHeader />
 
         <div className="flex items-center gap-2">
-          <Button variant={"secondary"} size={"sm"} className="h-8 gap-2">
+          <Button variant={"secondary"} size={"sm"} className="h-8 gap-2" onClick={open}>
             <Sparkles className="size-4" />
             Ask AI
           </Button>
@@ -99,7 +109,7 @@ const DashboardSidebarClient = ({ children }: Props) => {
           </nav>
 
           <div className="flex flex-col items-center gap-2 border-t border-primary-foreground/20 pb-2">
-            <InviteMemberDialog 
+            <InviteMemberDialog
               canInvite={role === "admin"}
               trigger={
                 <button
@@ -107,22 +117,20 @@ const DashboardSidebarClient = ({ children }: Props) => {
                   className="group flex flex-col items-center gap-1 text-xs font-medium text-primary-foreground/70 transition-colors hover:text-primary-foreground"
                 >
                   <span className="flex size-9 items-center justify-center rounded-lg transition-colors group-hover:bg-primary-foreground/10">
-                    <UserPlus className="size-4"/>
+                    <UserPlus className="size-4" />
                   </span>
-                  <span className="font-medium text-xs">
-                    Invite
-                  </span>
+                  <span className="font-medium text-xs">Invite</span>
                 </button>
               }
             />
           </div>
-
         </aside>
 
-        
         <main className="flex flex-1 overflow-hidden border rounded-lg">
           {children}
         </main>
+
+        <AskAiSidebar preloadedCurrentThread={preloadedCurrentThread} />
       </div>
     </div>
   );

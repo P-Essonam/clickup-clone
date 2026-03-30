@@ -13,7 +13,7 @@ import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import ListItem from "./list-item";
 import SpaceDialog from "./space-dialog";
 import ListDialog from "./list-dialog";
-import { useSpaces } from "../hooks/use-spaces";
+import { useSpaces } from "../../../hooks/use-spaces";
 import DeleteConfirmDialog from "@/components/delete-confirm-dialog";
 
 interface SpaceItemProps {

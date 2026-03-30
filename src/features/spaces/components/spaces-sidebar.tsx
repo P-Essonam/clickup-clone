@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSpaces } from "../hooks/use-spaces";
+import { useSpaces } from "../../../hooks/use-spaces";
 import { useActiveNavigation } from "../hooks/use-active-navigation";
 import {
   DragDropContext,
