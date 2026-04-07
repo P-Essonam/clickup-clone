@@ -8,9 +8,11 @@
  * @module
  */
 
+import type * as agentsCreation from "../agentsCreation.js";
 import type * as auth from "../auth.js";
 import type * as brain from "../brain.js";
 import type * as lib_constants from "../lib/constants.js";
+import type * as lib_utils from "../lib/utils.js";
 import type * as lists from "../lists.js";
 import type * as nodeAction from "../nodeAction.js";
 import type * as onboarding from "../onboarding.js";
@@ -26,9 +28,11 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  agentsCreation: typeof agentsCreation;
   auth: typeof auth;
   brain: typeof brain;
   "lib/constants": typeof lib_constants;
+  "lib/utils": typeof lib_utils;
   lists: typeof lists;
   nodeAction: typeof nodeAction;
   onboarding: typeof onboarding;

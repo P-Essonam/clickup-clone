@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { internalMutation, internalQuery } from "./_generated/server";
 import type { Id } from "./_generated/dataModel";
+import { computeTools } from "./lib/utils";
 // import { computeTools } from "./lib/utils";
 
 const MAX_LIMIT = 100;
@@ -385,74 +386,73 @@ export const deleteTask = internalMutation({
 // Agents
 // ─────────────────────────────────────────────────────────────────────────────
 
-// export const listAgents = internalQuery({
-//   args: {
-//     organizationId: v.string(),
-//     limit: v.optional(v.number()),
-//   },
-//   handler: async (ctx, { organizationId, limit }) =>
-//     ctx.db
-//       .query("agents")
-//       .withIndex("by_organization", (q) =>
-//         q.eq("organizationId", organizationId),
-//       )
-//       .order("desc")
-//       .take(clamp(limit)),
-// });
+export const listAgents = internalQuery({
+  args: {
+    organizationId: v.string(),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, { organizationId, limit }) =>
+    ctx.db
+      .query("agents")
+      .withIndex("by_organization", (q) =>
+        q.eq("organizationId", organizationId),
+      )
+      .order("desc")
+      .take(clamp(limit)),
+});
 
-// export const createOrUpdateAgent = internalMutation({
-//   args: {
-//     organizationId: v.string(),
-//     ownerId: v.string(),
-//     threadId: v.string(),
-//     name: v.string(),
-//     description: v.string(),
-//     instructions: v.string(),
-//     avatar: v.string(), // Required: one of /avatar1.jpg, /avatar2.jpg, /avatar3.jpg
-//     tools: v.optional(v.array(v.string())),
-//   },
-//   handler: async (ctx, args) => {
-//     // Compute tools from instruction text
-//     const tools = computeTools(args.instructions);
+export const createOrUpdateAgent = internalMutation({
+  args: {
+    organizationId: v.string(),
+    ownerId: v.string(),
+    threadId: v.string(),
+    name: v.string(),
+    description: v.string(),
+    instructions: v.string(),
+    avatar: v.string(), // Required: one of /avatar1.jpg, /avatar2.jpg, /avatar3.jpg
+    tools: v.optional(v.array(v.string())),
+  },
+  handler: async (ctx, args) => {
+    // Compute tools from instruction text
+    const tools = computeTools(args.instructions);
 
-//     const now = Date.now();
-//     const existing = await ctx.db
-//       .query("agents")
-//       .withIndex("by_threadId", (q) => q.eq("threadId", args.threadId))
-//       .first();
+    const now = Date.now();
+    const existing = await ctx.db
+      .query("agents")
+      .withIndex("by_threadId", (q) => q.eq("threadId", args.threadId))
+      .first();
 
-//     if (existing) {
-//       await ctx.db.patch(existing._id, {
-//         ...(args.name !== undefined && { name: args.name }),
-//         ...(args.description !== undefined && {
-//           description: args.description,
-//         }),
-//         ...(args.instructions !== undefined && {
-//           instructions: args.instructions,
-//         }),
-//         ...(args.threadId !== undefined && { threadId: args.threadId }),
-//         tools, // Use computed tools
-//         updatedAt: now,
-//         // Note: avatar is never updated after creation
-//       });
-//       return existing._id;
-//     }
+    if (existing) {
+      await ctx.db.patch(existing._id, {
+        ...(args.name !== undefined && { name: args.name }),
+        ...(args.description !== undefined && {
+          description: args.description,
+        }),
+        ...(args.instructions !== undefined && {
+          instructions: args.instructions,
+        }),
+        ...(args.threadId !== undefined && { threadId: args.threadId }),
+        tools, // Use computed tools
+        updatedAt: now,
+        // Note: avatar is never updated after creation
+      });
+      return existing._id;
+    }
 
-//     return ctx.db.insert("agents", {
-//       name: args.name,
-//       description: args.description,
-//       organizationId: args.organizationId,
-//       ownerId: args.ownerId,
-//       threadId: args.threadId,
-//       instructions: args.instructions,
-//       avatar: args.avatar,
-//       isActive: true,
-//       manualTriggers: {
-//         assignTask: true,
-//       },
-//       tools, // Use computed tools
-//       createdAt: now,
-//       updatedAt: now,
-//     });
-//   },
-// });
+    return ctx.db.insert("agents", {
+      name: args.name,
+      description: args.description,
+      organizationId: args.organizationId,
+      ownerId: args.ownerId,
+      threadId: args.threadId,
+      instructions: args.instructions,
+      avatar: args.avatar,
+      isActive: true,
+      manualTriggers: {
+        assignTask: true,
+      },
+      tools, // Use computed tools
+      updatedAt: now,
+    });
+  },
+});
