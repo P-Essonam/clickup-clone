@@ -6,6 +6,7 @@ import type { Doc, Id } from "./_generated/dataModel";
 import type { BrainCtx } from "./brain";
 // import type { CreateAgentCtx } from "./agentsCreation";
 import { ConvexError } from "convex/values";
+import { CreateAgentCtx } from "./agentsCreation";
 
 // Shared schemas
 const zLimit = z
@@ -311,52 +312,52 @@ export const updateTask = createTool({
 // Agents
 // ─────────────────────────────────────────────────────────────────────────────
 
-// export const listAgents = createTool({
-//   description: "Get all agents in the workspace",
-//   args: z.object({ limit: zLimit }),
-//   handler: async (ctx: BrainCtx, args): Promise<Doc<"agents">[]> => {
-//     return (await ctx.runQuery(internal.toolsApi.listAgents, {
-//       organizationId: ctx.organizationId,
-//       limit: args.limit,
-//     })) as Doc<"agents">[];
-//   },
-// });
+export const listAgents = createTool({
+  description: "Get all agents in the workspace",
+  args: z.object({ limit: zLimit }),
+  handler: async (ctx: BrainCtx, args): Promise<Doc<"agents">[]> => {
+    return (await ctx.runQuery(internal.toolsApi.listAgents, {
+      organizationId: ctx.organizationId,
+      limit: args.limit,
+    })) as Doc<"agents">[];
+  },
+});
 
-// export const createOrUpdateAgent = createTool({
-//   description:
-//     "Create a new agent or update an existing one. Use agentId to update, omit to create. The threadId will be automatically set from the current conversation thread.",
-//   args: z.object({
-//     name: z.string().describe("Agent name"),
-//     description: z.string().describe("Agent description"),
-//     instructions: z.string().describe("Agent instructions/prompt"),
-//     avatar: z
-//       .string()
-//       .describe(
-//         "Agent avatar path - must be one of: /avatar1.jpg, /avatar2.jpg, /avatar3.jpg",
-//       ),
-//     tools: z
-//       .array(z.string())
-//       .optional()
-//       .describe("Array of tool IDs the agent can use"),
-//   }),
-//   handler: async (ctx: CreateAgentCtx, args): Promise<Id<"agents">> => {
-//     let threadId = ctx.threadId;
-//     if (!threadId) {
-//       throw new ConvexError("Thread ID is required");
-//     }
+export const createOrUpdateAgent = createTool({
+  description:
+    "Create a new agent or update an existing one. Use agentId to update, omit to create. The threadId will be automatically set from the current conversation thread.",
+  args: z.object({
+    name: z.string().describe("Agent name"),
+    description: z.string().describe("Agent description"),
+    instructions: z.string().describe("Agent instructions/prompt"),
+    avatar: z
+      .string()
+      .describe(
+        "Agent avatar path - must be one of: /avatar1.jpg, /avatar2.jpg, /avatar3.jpg",
+      ),
+    tools: z
+      .array(z.string())
+      .optional()
+      .describe("Array of tool IDs the agent can use"),
+  }),
+  handler: async (ctx: CreateAgentCtx, args): Promise<Id<"agents">> => {
+    let threadId = ctx.threadId;
+    if (!threadId) {
+      throw new ConvexError("Thread ID is required");
+    }
 
-//     return (await ctx.runMutation(internal.toolsApi.createOrUpdateAgent, {
-//       organizationId: ctx.organizationId,
-//       ownerId: ctx.ownerId,
-//       threadId: threadId,
-//       name: args.name,
-//       description: args.description,
-//       instructions: args.instructions,
-//       avatar: args.avatar,
-//       tools: args.tools,
-//     })) as Id<"agents">;
-//   },
-// });
+    return (await ctx.runMutation(internal.toolsApi.createOrUpdateAgent, {
+      organizationId: ctx.organizationId,
+      ownerId: ctx.ownerId,
+      threadId: threadId,
+      name: args.name,
+      description: args.description,
+      instructions: args.instructions,
+      avatar: args.avatar,
+      tools: args.tools,
+    })) as Id<"agents">;
+  },
+});
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Export
@@ -379,5 +380,5 @@ export const tools: ToolSet = {
   createTask,
   updateTask,
   listMembers,
-//   listAgents,
+  listAgents,
 };
