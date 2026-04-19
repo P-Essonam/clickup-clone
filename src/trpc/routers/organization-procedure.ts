@@ -229,4 +229,16 @@ export const organizationRouter = createTRPCRouter({
 
       return organization;
     }),
+
+  getUser: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const workos = getWorkOS();
+      const user = await workos.userManagement.getUser(input.userId);
+      return user;
+    }),
 });
