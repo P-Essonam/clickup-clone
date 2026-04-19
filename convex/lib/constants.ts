@@ -21,3 +21,16 @@ export const DEFAULT_AGENT_TOOLS = [
   // Members
   { id: "listMembers", name: "List members" },
 ] as const;
+
+
+export const AVAILABLE_TOOLS = [
+  // Spaces
+  { id: "createSpace", name: "Create space" },
+  { id: "updateSpace", name: "Update space" },
+  // Lists
+  { id: "createList", name: "Create list" },
+  { id: "updateList", name: "Update list" },
+  // Tasks
+  { id: "createTask", name: "Create task" },
+  { id: "updateTask", name: "Update task" },
+] as const;
